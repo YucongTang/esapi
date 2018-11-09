@@ -16,7 +16,7 @@ return [
         /* host
          * 数据库主机地址
          * */
-        'host'  => '101.200.38.217',
+        'host'  => '',
         /* name
          * 数据库名
          * */
@@ -28,7 +28,7 @@ return [
         /* pass
          * 数据库密码
          * */
-        'pass'  => 'Zy@test#mysql',
+        'pass'  => '',
         /* port
          * 数据库端口
          * */
