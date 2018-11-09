@@ -27,6 +27,16 @@ return [
          * 默认为空,空代表不验证,支持数组
          * */
         'ip'=>'',
+        /*
+         * 当IP已设置且当前服务器IP为已设置的IP
+         * IP未设置则此项不会生效,若已设置
+         * 系统自动调用如下配置文件
+         * */
+        'test'=>[
+//            'dbsql'=>'dbsql_test',
+//            'nosql'=>'nosql_test',
+//            'routes'=>'routes_test'
+        ]
     ],
 
     /*

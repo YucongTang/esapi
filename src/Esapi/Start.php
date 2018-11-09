@@ -37,13 +37,6 @@ define ('ES_API',__DIR__.ES_SEP);
 define('ES_VEN',dirname(dirname (ES_API)).ES_SEP.'vendor'.ES_SEP);
 
 /*
- * 设置安全目录
- * */
-ini_set('open_basedir',implode(':',[
-    ini_get('open_basedir'),ES_API,ES_APP,ES_VEN
-]));
-
-/*
  * 载入Composer自动加载文件
  * */
 $object = require_once ES_VEN."autoload.php";

@@ -225,9 +225,7 @@ class Route implements RouteInterface
         return false;
     }
 
-    /*
-     * 核验参数
-     * */
+
     private function checkParams($link_array,$match_array,$values,$type = 'class')
     {
         if($values[$type] === "{{$type}}")

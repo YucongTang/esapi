@@ -1,5 +1,7 @@
 <?php
-
+/*
+ * 输出
+ * */
 function raise($message , $code = 0 ,$data = [] , $async = false)
 {
     \Esapi\Esapi::instance ()->response->setStatus($code);
@@ -13,6 +15,10 @@ function raise($message , $code = 0 ,$data = [] , $async = false)
     \Esapi\Console\Event::execute ('EXECUTE_AFTER',$structure);
     \Esapi\Esapi::instance ()->response->setContent( autoConversion ($structure) )->send($async);
 }
+
+/*
+ * 数组转json
+ * */
 if(!function_exists('array2json'))
 {
     function array2json( array $array )
@@ -20,6 +26,10 @@ if(!function_exists('array2json'))
         return json_encode($array);
     }
 }
+
+/*
+ * 数组转xml
+ * */
 if(!function_exists('array2xml'))
 {
     function array2xml( array $array )
@@ -46,6 +56,10 @@ if(!function_exists('array2xml'))
         )->asXml();
     }
 }
+
+/*
+ * 数组转对象
+ * */
 if(!function_exists('array2object'))
 {
     function array2object( array $array )
@@ -53,6 +67,10 @@ if(!function_exists('array2object'))
         return json2object(json_encode($array));
     }
 }
+
+/*
+ * json转数组
+ * */
 if(!function_exists('json2array'))
 {
     function json2array( $json )
@@ -60,6 +78,10 @@ if(!function_exists('json2array'))
         return json_decode($json,true);
     }
 }
+
+/*
+ * json转xml
+ * */
 if(!function_exists('json2xml'))
 {
     function json2xml( $json )
@@ -67,6 +89,10 @@ if(!function_exists('json2xml'))
         return array2Xml(json_decode($json,true));
     }
 }
+
+/*
+ * json转对象
+ * */
 if(!function_exists('json2object'))
 {
     function json2object( $json )
@@ -74,6 +100,10 @@ if(!function_exists('json2object'))
         return json_decode($json);
     }
 }
+
+/*
+ * xml转数组
+ * */
 if(!function_exists('xml2array'))
 {
     function xml2array( $xml )
@@ -81,6 +111,10 @@ if(!function_exists('xml2array'))
         return object2array(simplexml_load_string($xml));
     }
 }
+
+/*
+ * xml转json
+ * */
 if(!function_exists('xml2json'))
 {
     function xml2json( $xml )
@@ -88,6 +122,10 @@ if(!function_exists('xml2json'))
         return object2json(simplexml_load_string($xml));
     }
 }
+
+/*
+ * xml转对象
+ * */
 if(!function_exists('xml2object'))
 {
     function xml2object( $xml )
@@ -95,6 +133,10 @@ if(!function_exists('xml2object'))
         return simplexml_load_string($xml);
     }
 }
+
+/*
+ * 对象转数组
+ * */
 if(!function_exists('object2array'))
 {
     function object2array( $object )
@@ -102,6 +144,10 @@ if(!function_exists('object2array'))
         return json2array(object2json($object));
     }
 }
+
+/*
+ * 对象转json
+ * */
 if(!function_exists('object2json'))
 {
     function object2json( $object )
@@ -109,6 +155,10 @@ if(!function_exists('object2json'))
         return json_encode($object);
     }
 }
+
+/*
+ * 对象转XML
+ * */
 if(!function_exists('object2xml'))
 {
     function object2xml( $object )
@@ -116,6 +166,10 @@ if(!function_exists('object2xml'))
         return array2xml(object2array($object));
     }
 }
+
+/*
+ * 格式化输出格式
+ * */
 if(!function_exists ('autoConversion'))
 {
     function autoConversion( $content )
@@ -125,6 +179,10 @@ if(!function_exists ('autoConversion'))
         ),$content);
     }
 }
+
+/*
+ * 批量排序
+ * */
 if( !function_exists('multiSort') )
 {
     function multiSort($arr,$key,$sort = 'ASC')
@@ -138,6 +196,10 @@ if( !function_exists('multiSort') )
         return $arr;
     }
 }
+
+/*
+ * 键值转换
+ * */
 if( !function_exists('val2key') )
 {
     function val2key(array $arr , $val_key = '' , $multidimensional = false)
@@ -155,6 +217,9 @@ if( !function_exists('val2key') )
     }
 }
 
+/*
+ * 执行脚本
+ * */
 if( !function_exists( 'shell_cron' ) )
 {
     function shell_cron( $cron_file = '' , $noHup = false , $paramString = '' )

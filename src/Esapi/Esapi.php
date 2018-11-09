@@ -47,6 +47,10 @@ class Esapi extends Container
      * */
     static function config($key , $file = 'config')
     {
+        if(static::isTest() && static::config('dev.test.'.$file))
+        {
+            $file = static::config('dev.test.'.$file);
+        }
         $container_name = implode ('_',['conf',md5($file)]);
         if(!self::instance()->offsetExists($container_name))
         {
@@ -95,6 +99,29 @@ class Esapi extends Container
             $hash = substr($hash,8,16);
         }
         return $hash;
+    }
+
+    /*
+     * 是否为测试环境
+     * return boolean
+     * */
+    public static function isTest()
+    {
+        $set_ip = static::config('dev.ip');
+        if(empty($set_ip))
+        {
+            return false;
+        }
+        $ser_ip = static::instance()->request->getServer('server_addr');
+        if(is_string($set_ip) && $set_ip == $ser_ip)
+        {
+            return true;
+        }
+        elseif(is_array($set_ip) && in_array($ser_ip,$set_ip))
+        {
+            return true;
+        }
+        return false;
     }
 
     /*
@@ -189,15 +216,15 @@ class Esapi extends Container
     public function __get($name)
     {
         $name = strtolower($name);
-        if(!in_array($name,self::config('injection')))
-        {
-            throw new \Exception(sprintf (
-                "Service %s not allowed to inject,please set config injection.",$name
-            ));
-        }
-        $category = ['http','input','request','response','route'];
         if(!$this->offsetExists($name))
         {
+            if(!in_array($name,self::config('injection')))
+            {
+                throw new \Exception(sprintf (
+                    "Service %s not allowed to inject,please set config injection.",$name
+                ));
+            }
+            $category = ['http','input','request','response','route'];
             $old_class_name = ucfirst($name);
             if(!$class = self::config('reset.'.strtolower($old_class_name)))
             {
@@ -213,17 +240,22 @@ class Esapi extends Container
                 ));
             }
             $object = new $class;
-            $interface = sprintf (
-                "\\Esapi\\Interfaces\\%sInterface",$old_class_name
-            );
-            if(!$object instanceof $interface)
+            if(in_array($name,array_merge($category,[
+                'db,redis,memcached'
+            ])))
             {
-                throw new \Exception(sprintf (
-                    "Service %s must inherit %sInterface",$class,$old_class_name
-                ));
+                $interface = sprintf (
+                    "\\Esapi\\Interfaces\\%sInterface",$old_class_name
+                );
+                if(!$object instanceof $interface)
+                {
+                    throw new \Exception(sprintf (
+                        "Service %s must inherit %sInterface",$class,$old_class_name
+                    ));
+                }
             }
-            $this[$name] = $object;
+            $this->offsetSet($name,$object);
         }
-        return $this[$name];
+        return $this->offsetGet($name);
     }
 }
